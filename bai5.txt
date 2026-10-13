@@ -1,0 +1,29 @@
+Phần 1: Thiết kế kiến trúc
+Header block: Khối chú thích (#) chứa thông tin kịch bản và tác giả.
+
+Biến cấu hình: Khai báo đường dẫn tệp bằng biến PowerShell ($variable).
+
+Thông báo tiến trình: Dùng Write-Host in trạng thái ra màn hình Terminal mà không lẫn vào tệp báo cáo.
+
+Logic xử lý: Tạo tiêu đề (>), sau đó dùng Pipeline đọc log (Get-Content) ➔ lọc lỗi (Select-String) ➔ ghi nối tiếp (>>).
+
+Phần 2: Sản phẩm (auto_report.ps1)
+PowerShell
+<#
+.SYNOPSIS
+    Kich bản tự động lọc lỗi 404 từ tệp log.
+#>
+
+# 1. Khai báo biến đường dẫn
+$logFile = "server.log"
+$reportFile = "daily_report.txt"
+
+# 2. Thông báo tiến trình
+Write-Host "Dang bat dau loc log..." -ForegroundColor Cyan
+
+# 3 & 4. Tạo tiêu đề và chạy pipeline xử lý lưu nối tiếp
+"=== HE THONG TU DONG LOC LOG ===" > $reportFile
+Get-Content $logFile | Select-String "404" >> $reportFile
+
+# 5. Thông báo hoàn thành
+Write-Host "Hoan tat! Ket qua da duoc luu vao $reportFile" -ForegroundColor Green
